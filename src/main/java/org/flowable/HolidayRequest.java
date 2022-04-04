@@ -9,10 +9,7 @@ import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class HolidayRequest {
     private static RepositoryService repositoryService;
@@ -22,13 +19,9 @@ public class HolidayRequest {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        ProcessEngine processEngine = new StandaloneProcessEngineConfiguration()
-                .setJdbcUrl("jdbc:mysql://localhost:3306/flowable")
-                .setJdbcUsername("root")
-                .setJdbcPassword("1111")
-                .setJdbcDriver("com.mysql.jdbc.Driver")
-                .setDatabaseSchemaUpdate(AbstractEngineConfiguration.DB_SCHEMA_UPDATE_TRUE)
-                .buildProcessEngine();
+        // build process engine
+        ProcessEngine processEngine = buildProcessEngine();
+
 
         repositoryService = processEngine.getRepositoryService();
         runtimeService = processEngine.getRuntimeService();
@@ -84,9 +77,23 @@ public class HolidayRequest {
     }
 
     /**
+     * 构建工作流引擎
+     */
+    private static ProcessEngine buildProcessEngine() {
+        ProcessEngineConfiguration processEngineConfiguration = ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration()
+                .setJdbcUrl("jdbc:mysql://localhost:3306/flowable")
+                .setJdbcUsername("root")
+                .setJdbcPassword("1111")
+                .setJdbcDriver("com.mysql.jdbc.Driver")
+                .setDatabaseSchemaUpdate(AbstractEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
+        processEngineConfiguration.setEventListeners(Collections.singletonList(new MyEventListener()));
+        return processEngineConfiguration.buildProcessEngine();
+    }
+
+    /**
      * 输入启动参数
      */
-    private static Map<String,Object> inputVariables() {
+    private static Map<String, Object> inputVariables() {
 
 
         System.out.println("Who are you?");
