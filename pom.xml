@@ -13,8 +13,8 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
-    <!-- https://mvnrepository.com/artifact/org.flowable/flowable-engine -->
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.flowable/flowable-engine -->
         <dependency>
             <groupId>org.flowable</groupId>
             <artifactId>flowable-engine</artifactId>
