@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class HelloRequest {
+public class HolidayRequest {
     private static RepositoryService repositoryService;
     private static RuntimeService runtimeService;
     private static TaskService taskService;
@@ -33,14 +33,14 @@ public class HelloRequest {
         repositoryService = processEngine.getRepositoryService();
         runtimeService = processEngine.getRuntimeService();
         taskService = processEngine.getTaskService();
-        HistoryService historyService = processEngine.getHistoryService();
+        historyService = processEngine.getHistoryService();
 
         // deploy
-//        deploy();
+        deploy();
 
         // queryProcessDefinition
-//        ProcessDefinition holidayRequest = queryProcessDefinition("holidayRequest");
-//        System.out.printf("holidayRequest id = %s, name = %s%n", holidayRequest.getId(), holidayRequest.getName());
+        ProcessDefinition processDefinition = queryProcessDefinition("holidayRequest");
+        System.out.printf("holidayRequest id = %s, name = %s%n", processDefinition.getId(), processDefinition.getName());
 
         // init variables
         Map<String, Object> variables = inputVariables();
@@ -72,7 +72,7 @@ public class HelloRequest {
         // query history
         List<HistoricActivityInstance> activities =
                 historyService.createHistoricActivityInstanceQuery()
-                        .processInstanceId(processInstance.getId())
+                        .processInstanceId(processDefinition.getId())
                         .finished()
                         .orderByHistoricActivityInstanceEndTime().asc()
                         .list();
