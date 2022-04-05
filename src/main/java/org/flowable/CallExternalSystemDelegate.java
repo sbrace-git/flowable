@@ -11,6 +11,6 @@ public class CallExternalSystemDelegate implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) {
-        LOGGER.info("Calling the external system for employee " + execution.getVariable("employee"));
+        LOGGER.info("Calling the external system for employee 【{}】", execution.getVariable("employee"));
     }
 }

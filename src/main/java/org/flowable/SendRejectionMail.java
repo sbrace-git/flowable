@@ -11,6 +11,6 @@ public class SendRejectionMail implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) {
         String employee = execution.getVariable("employee", String.class);
-        LOGGER.info("rejected employee = {}", employee);
+        LOGGER.info("rejected employee = 【{}】", employee);
     }
 }
