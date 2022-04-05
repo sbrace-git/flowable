@@ -15,14 +15,14 @@ public class MyEventListener implements FlowableEventListener {
     @Override
     public void onEvent(FlowableEvent flowableEvent) {
         FlowableEventType type = flowableEvent.getType();
-        LOGGER.debug("type = 【{}】", type);
-        if (JOB_EXECUTION_SUCCESS.equals(type)) {
-            LOGGER.debug("A job well done!");
-        } else if (JOB_EXECUTION_FAILURE.equals(type)) {
-            LOGGER.debug("A job has failed...");
-        } else {
-            LOGGER.debug("Event received: " + flowableEvent.getType());
-        }
+//        LOGGER.info("type = 【{}】", type);
+//        if (JOB_EXECUTION_SUCCESS.equals(type)) {
+//            LOGGER.info("A job well done!");
+//        } else if (JOB_EXECUTION_FAILURE.equals(type)) {
+//            LOGGER.info("A job has failed...");
+//        } else {
+//            LOGGER.info("Event received: " + flowableEvent.getType());
+//        }
     }
 
     @Override

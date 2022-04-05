@@ -8,10 +8,13 @@ import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class HolidayRequest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HolidayRequest.class);
     private static RepositoryService repositoryService;
     private static RuntimeService runtimeService;
     private static TaskService taskService;
@@ -29,11 +32,11 @@ public class HolidayRequest {
         historyService = processEngine.getHistoryService();
 
         // deploy
-        deploy();
+//        deploy();
 
         // queryProcessDefinition
         ProcessDefinition processDefinition = queryProcessDefinition("holidayRequest");
-        System.out.printf("holidayRequest id = %s, name = %s%n", processDefinition.getId(), processDefinition.getName());
+        LOGGER.info("holidayRequest id = {}, name = {}}", processDefinition.getId(), processDefinition.getName());
 
         // init variables
         Map<String, Object> variables = inputVariables();
@@ -43,17 +46,17 @@ public class HolidayRequest {
 
         // query task by candidate group
         List<Task> taskList = queryTaskCandidateGroup("managers");
-        System.out.println("You have " + taskList.size() + " taskList:");
+        LOGGER.info("You have " + taskList.size() + " taskList:");
         for (int i = 0; i < taskList.size(); i++) {
-            System.out.println((i + 1) + ") " + taskList.get(i).getName());
+            LOGGER.info((i + 1) + ") " + taskList.get(i).getName());
         }
 
         // select task
-        System.out.println("Which task would you like to complete?");
+        LOGGER.info("Which task would you like to complete?");
         int taskIndex = Integer.parseInt(scanner.nextLine());
         Task task = taskList.get(taskIndex - 1);
         Map<String, Object> processVariables = taskService.getVariables(task.getId());
-        System.out.println(processVariables.get("employee") + " wants " +
+        LOGGER.info(processVariables.get("employee") + " wants " +
                 processVariables.get("nrOfHolidays") + " of holidays. Do you approve this?");
 
         // complete
@@ -70,7 +73,7 @@ public class HolidayRequest {
                         .orderByHistoricActivityInstanceEndTime().asc()
                         .list();
         for (HistoricActivityInstance activity : activities) {
-            System.out.println(activity.getActivityId() + " took "
+            LOGGER.info(activity.getActivityId() + " took "
                     + activity.getDurationInMillis() + " milliseconds");
         }
 
@@ -96,13 +99,13 @@ public class HolidayRequest {
     private static Map<String, Object> inputVariables() {
 
 
-        System.out.println("Who are you?");
+        LOGGER.info("Who are you?");
         String employee = scanner.nextLine();
 
-        System.out.println("How many holidays do you want to request?");
+        LOGGER.info("How many holidays do you want to request?");
         Integer nrOfHolidays = Integer.valueOf(scanner.nextLine());
 
-        System.out.println("Why do you need them?");
+        LOGGER.info("Why do you need them?");
         String description = scanner.nextLine();
 
         Map<String, Object> variables = new HashMap<>();
@@ -131,7 +134,7 @@ public class HolidayRequest {
                 .deploymentId(deploy.getId())
                 .singleResult();
 
-        System.out.println("Found process definition : " + deployment);
+        LOGGER.info("Found process definition : " + deployment);
     }
 
     /**
